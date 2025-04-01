@@ -53,10 +53,10 @@ func TestAddGetDelete(t *testing.T) {
 	data, err := store.Get(id)
 	require.NoError(t, err)
 	require.NotNil(t, data)
-	require.Equal(t, parcel.Client, data.Client)
-	require.Equal(t, parcel.Status, data.Status)
-	require.Equal(t, parcel.Address, data.Address)
-	require.Equal(t, parcel.CreatedAt, data.CreatedAt)
+	assert.Equal(t, parcel.Client, data.Client)
+	assert.Equal(t, parcel.Status, data.Status)
+	assert.Equal(t, parcel.Address, data.Address)
+	assert.Equal(t, parcel.CreatedAt, data.CreatedAt)
 
 	// delete
 	// удалите добавленную посылку, убедитесь в отсутствии ошибки
@@ -99,7 +99,7 @@ func TestSetAddress(t *testing.T) {
 	// получите добавленную посылку и убедитесь, что адрес обновился
 	data, err := store.Get(id)
 	require.NoError(t, err)
-	require.Equal(t, newAddress, data.Address)
+	assert.Equal(t, newAddress, data.Address)
 }
 
 // TestSetStatus проверяет обновление статуса
@@ -119,7 +119,7 @@ func TestSetStatus(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, id)
 	require.NotZero(t, id)
-	require.Equal(t, parcel.Status, ParcelStatusRegistered)
+	assert.Equal(t, parcel.Status, ParcelStatusRegistered)
 
 	// set status
 	// обновите статус, убедитесь в отсутствии ошибки
@@ -175,18 +175,13 @@ func TestGetByClient(t *testing.T) {
 	// убедитесь в отсутствии ошибки
 	// убедитесь, что количество полученных посылок совпадает с количеством добавленных
 	require.NoError(t, err)
-	require.Equal(t, len(parcels), len(storedParcels))
+	assert.Len(t, parcelMap, len(storedParcels))
 
 	// check
 	for _, parcel := range storedParcels {
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		// убедитесь, что значения полей полученных посылок заполнены верно
-		require.Equal(t, parcelMap[parcel.Number], parcel)
-		assert.Equal(t, parcelMap[parcel.Number].Client, parcel.Client)
-		assert.Equal(t, parcelMap[parcel.Number].CreatedAt, parcel.CreatedAt)
-		assert.Equal(t, parcelMap[parcel.Number].Status, parcel.Status)
-		assert.Equal(t, parcelMap[parcel.Number].Address, parcel.Address)
-
+		assert.Equal(t, parcelMap[parcel.Number], parcel)
 	}
 }
